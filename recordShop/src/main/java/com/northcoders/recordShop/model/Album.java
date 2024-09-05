@@ -29,6 +29,9 @@ public class Album {
     Genre genre;
 
     @Column
+    Integer releaseYear;
+
+    @Column
     String description;
 
 }
