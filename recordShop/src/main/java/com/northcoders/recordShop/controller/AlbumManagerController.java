@@ -18,5 +18,5 @@ public class AlbumManagerController {
     AlbumManagerService albumManagerService;
 
     @GetMapping("/albums")
-    public ResponseEntity<List<Album>>
+    public ResponseEntity<List<Album>> getAllAlbums()
 }

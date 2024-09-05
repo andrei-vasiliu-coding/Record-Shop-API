@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface AlbumManagerService {
 
-    List<Album> getAllAlbums(String genre);
+    List<Album> getAllAlbums();
     ResponseEntity<Album> findAlbumById(Long id);
     ResponseEntity<String> getAlbumDescriptionByName(String title);
     Album insertAlbum(Album album);

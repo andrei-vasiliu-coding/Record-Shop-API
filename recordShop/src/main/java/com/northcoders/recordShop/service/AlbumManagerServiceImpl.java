@@ -20,7 +20,7 @@ public class AlbumManagerServiceImpl implements AlbumManagerService {
     AlbumManagerRepository albumManagerRepository;
 
     @Override
-    public List<Album> getAllAlbums(String genre) {
+    public List<Album> getAllAlbums() {
         ArrayList<Album> albums = new ArrayList<>();
         albumManagerRepository.findAll().forEach(albums::add);
 
