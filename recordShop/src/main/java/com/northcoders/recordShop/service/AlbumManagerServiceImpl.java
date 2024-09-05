@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class AlbumManagerServiceImpl implements AlbumManagerService {
@@ -20,32 +21,49 @@ public class AlbumManagerServiceImpl implements AlbumManagerService {
 
     @Override
     public List<Album> getAllAlbums(String genre) {
-        return List.of();
-    }
+        ArrayList<Album> albums = new ArrayList<>();
+        albumManagerRepository.findAll().forEach(albums::add);
 
-    @Override
-    public ResponseEntity<Album> getAlbumById(Long id) {
-        return null;
-    }
-
-    @Override
-    public ResponseEntity<ArrayList<Album>> getAlbumDescriptionByName(String title) {
-        return null;
+        return albums;
     }
 
     @Override
     public Album insertAlbum(Album album) {
-        return null;
+        return albumManagerRepository.save(album);
+    }
+
+    @Override
+    public ResponseEntity<Album> findAlbumById(Long id) {
+        Optional<Album> album = albumManagerRepository.findById(id);
+
+        if (album.isEmpty()) {
+            return new ResponseEntity<>(NonexistentAlbum.getNonexistentAlbum(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        return new ResponseEntity<>(album.get(), HttpStatus.OK);
     }
 
     @Override
     public ResponseEntity<Album> updateAlbumById(Long id, Album album) {
-        return null;
+
+        if (albumManagerRepository.existsById(id)) {
+            albumManagerRepository.deleteById(id);
+            insertAlbum(album);
+
+            return new ResponseEntity<>(album, HttpStatus.OK);
+        }
+
+        return new ResponseEntity<>(NonexistentAlbum.getNonexistentAlbum(), HttpStatus.NOT_FOUND);
     }
 
     @Override
     public ResponseEntity<String> deleteAlbumById(Long id) {
-        return null;
+
+        if (albumManagerRepository.existsById(id)){
+            albumManagerRepository.deleteById(id);
+            return new ResponseEntity<>("Album deleted", HttpStatus.OK);
+        }
+        return new ResponseEntity<>("The album with the specified ID does not exist.", HttpStatus.UNPROCESSABLE_ENTITY);
     }
 
     @Override
@@ -64,7 +82,7 @@ public class AlbumManagerServiceImpl implements AlbumManagerService {
                 return new ResponseEntity<>(albumsOfGenre, HttpStatus.OK);
 
             } catch (IllegalArgumentException | NullPointerException e) {
-                return new ResponseEntity<>(new ArrayList<>() {{add(NonexistentAlbum.get());}}, HttpStatus.NOT_FOUND);
+                return new ResponseEntity<>(new ArrayList<>() {{add(NonexistentAlbum.getNonexistentAlbum());}}, HttpStatus.NOT_FOUND);
             }
         }
 
@@ -82,7 +100,7 @@ public class AlbumManagerServiceImpl implements AlbumManagerService {
             return new ResponseEntity<>(albumsOfArtist, HttpStatus.OK);
 
         } catch (IllegalArgumentException | NullPointerException e) {
-            return new ResponseEntity<>(new ArrayList<>() {{add(NonexistentAlbum.get());}}, HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(new ArrayList<>() {{add(NonexistentAlbum.getNonexistentAlbum());}}, HttpStatus.NOT_FOUND);
         }
     }
 
@@ -100,8 +118,19 @@ public class AlbumManagerServiceImpl implements AlbumManagerService {
             return new ResponseEntity<>(albumsOfYear, HttpStatus.OK);
 
         } catch (IllegalArgumentException | NullPointerException e) {
-            return new ResponseEntity<>(new ArrayList<>() {{add(NonexistentAlbum.get());}}, HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(new ArrayList<>() {{add(NonexistentAlbum.getNonexistentAlbum());}}, HttpStatus.NOT_FOUND);
         }
+    }
+
+    @Override
+    public ResponseEntity<String> getAlbumDescriptionByName(String title) {
+
+        for (Album album : albumManagerRepository.findAll()) {
+            if (album.getTitle().equals(title)) {
+                return new ResponseEntity<>(album.getDescription(), HttpStatus.OK);
+            }
+        }
+        return new ResponseEntity<>("Album not found", HttpStatus.NOT_FOUND);
     }
 
 }
