@@ -23,12 +23,13 @@ public class AlbumManagerController {
     @GetMapping("/albums")
     public ResponseEntity<List<Album>> getAllAlbums() {
         return new ResponseEntity<>(albumManagerService.getAllAlbums(), HttpStatus.OK);
+        //return ResponseEntity.ok(albumManagerService.getAllAlbums()); another way of writing it
     }
 
     @PostMapping
     public ResponseEntity<Album> addAlbum(@RequestBody Album album) {
         Album newAlbum = albumManagerService.insertAlbum(album);
-        return ResponseEntity.ok(newAlbum); //another way of writing the ResponseEntity
+        return new ResponseEntity<>(newAlbum, HttpStatus.CREATED);
     }
 
     @GetMapping("/albums/{id}")

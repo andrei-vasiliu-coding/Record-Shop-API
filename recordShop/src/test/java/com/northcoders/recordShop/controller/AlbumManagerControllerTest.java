@@ -11,6 +11,7 @@ import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
@@ -19,7 +20,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @AutoConfigureMockMvc
 @SpringBootTest
@@ -75,7 +76,20 @@ class AlbumManagerControllerTest {
     }
 
     @Test
-    public void testAddAlbum() {
+    public void testAddAlbum() throws Exception {
+
+        Album album = new Album(6L, "Radical Optimism", "Dua Lipa", Genre.POP,
+                2024, "A beautiful, calm summer album.");
+
+        when(mockAlbumManagerServiceImpl.insertAlbum(album)).thenReturn(album);
+
+        this.mockMvcController.perform(
+                        MockMvcRequestBuilders.post("/api/v1/recordShop")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(mapper.writeValueAsString(album)))
+                .andExpect(MockMvcResultMatchers.status().isCreated());
+
+        verify(mockAlbumManagerServiceImpl, times(1)).insertAlbum(album);
     }
 
     @Test
