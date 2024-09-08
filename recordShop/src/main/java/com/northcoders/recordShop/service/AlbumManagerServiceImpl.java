@@ -16,6 +16,14 @@ import java.util.Optional;
 @Service
 public class AlbumManagerServiceImpl implements AlbumManagerService {
 
+    //Recommended construction-based injection for better testability and immutability instead of Autowired.
+//    private final AlbumManagerRepository albumManagerRepository;
+//
+//    // Constructor-based injection
+//    public AlbumManagerServiceImpl(AlbumManagerRepository albumManagerRepository) {
+//        this.albumManagerRepository = albumManagerRepository;
+//    }
+
     @Autowired
     AlbumManagerRepository albumManagerRepository;
 
@@ -47,10 +55,10 @@ public class AlbumManagerServiceImpl implements AlbumManagerService {
     public ResponseEntity<Album> updateAlbumById(Long id, Album album) {
 
         if (albumManagerRepository.existsById(id)) {
-            albumManagerRepository.deleteById(id);
-            insertAlbum(album);
+            album.setId(id);
+            Album updatedAlbum = albumManagerRepository.save(album);
 
-            return new ResponseEntity<>(album, HttpStatus.OK);
+            return new ResponseEntity<>(updatedAlbum, HttpStatus.OK);
         }
 
         return new ResponseEntity<>(NonexistentAlbum.getNonexistentAlbum(), HttpStatus.NOT_FOUND);
