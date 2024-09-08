@@ -86,7 +86,7 @@ class AlbumManagerControllerTest {
         when(mockAlbumManagerServiceImpl.insertAlbum(album)).thenReturn(album);
 
         this.mockMvcController.perform(
-                        MockMvcRequestBuilders.post("/api/v1/recordShop")
+                        MockMvcRequestBuilders.post("/api/v1/recordShop/albums")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(mapper.writeValueAsString(album)))
                 .andExpect(MockMvcResultMatchers.status().isCreated());
