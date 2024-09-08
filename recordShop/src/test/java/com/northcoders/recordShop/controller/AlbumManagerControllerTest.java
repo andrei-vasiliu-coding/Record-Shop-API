@@ -75,6 +75,11 @@ class AlbumManagerControllerTest {
     }
 
     @Test
-    void addAlbum() {
+    public void testAddAlbum() {
+    }
+
+    @Test
+    public void testGetAlbumById() {
+
     }
 }
