@@ -11,7 +11,9 @@ import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
@@ -93,7 +95,37 @@ class AlbumManagerControllerTest {
     }
 
     @Test
-    public void testGetAlbumById() {
+    public void testGetAlbumById() throws Exception {
+        //Arrange
+        Long albumId = 1L;
+        Album album = new Album(albumId, "Radical Optimism", "Dua Lipa", Genre.POP,
+                2024, "A beautiful, calm summer album.");
 
+        when(mockAlbumManagerServiceImpl.findAlbumById(albumId))
+                .thenReturn(new ResponseEntity<>(album, HttpStatus.OK));
+
+        //Act and Assert
+        this.mockMvcController.perform(
+                        MockMvcRequestBuilders.get("/api/v1/recordShop/albums/{id}", albumId))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(albumId))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.title").value("Radical Optimism"));
+
+        verify(mockAlbumManagerServiceImpl, times(1)).findAlbumById(albumId);
     }
+
+    @Test
+    public void testGetAlbumByIdNotFound() throws Exception {
+        // Arrange
+        Long albumId = 999L; // ID that doesn't exist
+        when(mockAlbumManagerServiceImpl.findAlbumById(albumId)).thenReturn(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+
+        // Act and Assert
+        this.mockMvcController.perform(
+                        MockMvcRequestBuilders.get("/api/v1/recordShop/albums/{id}", albumId))
+                .andExpect(MockMvcResultMatchers.status().isNotFound());
+
+        verify(mockAlbumManagerServiceImpl, times(1)).findAlbumById(albumId);
+    }
+
 }
