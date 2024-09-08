@@ -128,4 +128,29 @@ class AlbumManagerControllerTest {
         verify(mockAlbumManagerServiceImpl, times(1)).findAlbumById(albumId);
     }
 
+    @Test
+    public void testUpdateAlbumById() throws Exception {
+        //Arrange
+        Long albumId = 1L;
+        Album album = new Album(albumId, "Radical Optimism", "Chappell Roan", Genre.POP,
+                2024, "A beautiful, calm summer album.");
+        Album updatedAlbum = new Album(albumId, "Radical Optimism", "Dua Lipa", Genre.POP,
+                2024, "A beautiful, calm summer album.");
+
+        when(mockAlbumManagerServiceImpl.updateAlbumById(albumId, updatedAlbum))
+                .thenReturn(new ResponseEntity<>(updatedAlbum, HttpStatus.OK));
+
+        //Act and Assert
+        this.mockMvcController.perform(
+                        MockMvcRequestBuilders.put("/api/v1/recordShop/albums/{idToUpdate}", albumId)
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(mapper.writeValueAsString(updatedAlbum)))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(albumId))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.title").value("Radical Optimism"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.artist").value("Dua Lipa"));
+
+        verify(mockAlbumManagerServiceImpl, times(1)).updateAlbumById(albumId, updatedAlbum);
+    }
+
 }

@@ -37,9 +37,9 @@ public class AlbumManagerController {
         return albumManagerService.findAlbumById(id);
     }
 
-    @PutMapping("/albums/{id}_{album}")
-    public ResponseEntity<Album> updateAlbumById(@PathVariable Long id, Album album) {
-        return albumManagerService.updateAlbumById(id, album);
+    @PutMapping("/albums/{idToUpdate}")
+    public ResponseEntity<Album> updateAlbumById(@PathVariable Long idToUpdate, @RequestBody Album album) {
+        return albumManagerService.updateAlbumById(idToUpdate, album);
     }
 
 }
