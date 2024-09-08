@@ -153,4 +153,24 @@ class AlbumManagerControllerTest {
         verify(mockAlbumManagerServiceImpl, times(1)).updateAlbumById(albumId, updatedAlbum);
     }
 
+    @Test
+    public void testDeleteAlbumById() throws Exception {
+        //Arrange
+        Long albumId = 1L;
+        Album album = new Album(albumId, "Radical Optimism", "Dua Lipa", Genre.POP,
+                2024, "A beautiful, calm summer album.");
+
+        when(mockAlbumManagerServiceImpl.deleteAlbumById(albumId))
+                .thenReturn(new ResponseEntity<>("Album deleted", HttpStatus.OK));
+
+        //Act and Assert
+        this.mockMvcController.perform(
+                        MockMvcRequestBuilders.delete("/api/v1/recordShop/albums/{id}", albumId))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.id").doesNotExist())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.title").doesNotExist());
+
+        verify(mockAlbumManagerServiceImpl, times(1)).deleteAlbumById(albumId);
+    }
+
 }
