@@ -42,4 +42,9 @@ public class AlbumManagerController {
         return albumManagerService.updateAlbumById(idToUpdate, album);
     }
 
+    @DeleteMapping("/albums/{idToDelete}")
+    public ResponseEntity<String> deleteAlbumById(@PathVariable Long idToDelete) {
+        return albumManagerService.deleteAlbumById(idToDelete);
+    }
+
 }
