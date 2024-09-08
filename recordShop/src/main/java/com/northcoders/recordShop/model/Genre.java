@@ -1,5 +1,7 @@
 package com.northcoders.recordShop.model;
 
+import com.fasterxml.jackson.annotation.JsonValue;
+
 public enum Genre {
     POP("Pop"),
     ROCK("Rock"),
@@ -17,4 +19,11 @@ public enum Genre {
     Genre(String descriptor) {
         this.genreDescriptor = descriptor;
     }
+
+    //Instructs Jackson to use the genreDescriptor field when serializing the enum to JSON.
+    @JsonValue
+    public String getGenreDescriptor() {
+        return genreDescriptor;
+    }
+
 }
