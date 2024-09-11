@@ -142,7 +142,7 @@ class AlbumManagerControllerTest {
 
         //Act and Assert
         this.mockMvcController.perform(
-                        MockMvcRequestBuilders.put("/api/v1/recordShop/albums/{idToUpdate}", albumId)
+                        MockMvcRequestBuilders.put("/api/v1/recordShop/albums/id/{idToUpdate}", albumId)
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(mapper.writeValueAsString(updatedAlbum)))
                 .andExpect(MockMvcResultMatchers.status().isOk())
@@ -165,7 +165,7 @@ class AlbumManagerControllerTest {
 
         //Act and Assert
         this.mockMvcController.perform(
-                        MockMvcRequestBuilders.delete("/api/v1/recordShop/albums/{id}", albumId))
+                        MockMvcRequestBuilders.delete("/api/v1/recordShop/albums/id/{id}", albumId))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.id").doesNotExist())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.title").doesNotExist());
