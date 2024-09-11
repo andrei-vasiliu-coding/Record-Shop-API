@@ -106,7 +106,7 @@ class AlbumManagerControllerTest {
 
         //Act and Assert
         this.mockMvcController.perform(
-                        MockMvcRequestBuilders.get("/api/v1/recordShop/albums/{id}", albumId))
+                        MockMvcRequestBuilders.get("/api/v1/recordShop/albums/id/{id}", albumId))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(albumId))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.title").value("Radical Optimism"));
@@ -122,7 +122,7 @@ class AlbumManagerControllerTest {
 
         // Act and Assert
         this.mockMvcController.perform(
-                        MockMvcRequestBuilders.get("/api/v1/recordShop/albums/{id}", albumId))
+                        MockMvcRequestBuilders.get("/api/v1/recordShop/albums/id/{id}", albumId))
                 .andExpect(MockMvcResultMatchers.status().isNotFound());
 
         verify(mockAlbumManagerServiceImpl, times(1)).findAlbumById(albumId);

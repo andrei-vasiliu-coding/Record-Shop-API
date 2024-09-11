@@ -32,19 +32,40 @@ public class AlbumManagerController {
         return new ResponseEntity<>(newAlbum, HttpStatus.CREATED);
     }
 
-    @GetMapping("/albums/{id}")
+    @GetMapping("/albums/id/{id}")
     public ResponseEntity<Album> getAlbumById(@PathVariable Long id) {
         return albumManagerService.findAlbumById(id);
     }
 
-    @PutMapping("/albums/{idToUpdate}")
+    @PutMapping("/albums/id/{idToUpdate}")
     public ResponseEntity<Album> updateAlbumById(@PathVariable Long idToUpdate, @RequestBody Album album) {
         return albumManagerService.updateAlbumById(idToUpdate, album);
     }
 
-    @DeleteMapping("/albums/{idToDelete}")
+    @DeleteMapping("/albums/id/{idToDelete}")
     public ResponseEntity<String> deleteAlbumById(@PathVariable Long idToDelete) {
         return albumManagerService.deleteAlbumById(idToDelete);
     }
 
+    @GetMapping("/albums/genre/{genre}") //{genre} must be written all uppercase.
+    public ResponseEntity<ArrayList<Album>> findAlbumsByGenre(@PathVariable String genre) {
+        return albumManagerService.findAlbumsByGenre(genre);
+    }
+
+    @GetMapping("/albums/artist/{artist}") //%20 between names.
+    public ResponseEntity<ArrayList<Album>> findAlbumsByArtist(@PathVariable String artist) {
+        return albumManagerService.findAlbumsByArtist(artist);
+    }
+
+    @GetMapping("/albums/releaseYear/{releaseYear}")
+    public ResponseEntity<ArrayList<Album>> findAlbumsByReleaseYear(@PathVariable Integer releaseYear) {
+        return albumManagerService.findAlbumsByReleaseYear(releaseYear);
+    }
+
+    @GetMapping("/albums/title/{title}")
+    public ResponseEntity<String> getAlbumDescriptionByName(@PathVariable String title) {
+        return albumManagerService.getAlbumDescriptionByName(title);
+    }
+
+    // http://localhost:8080/actuator/health to check the status of the app.
 }
