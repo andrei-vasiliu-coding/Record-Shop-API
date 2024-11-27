@@ -56,3 +56,71 @@ An API built to manage a record shop's catalog of albums and artists. This proje
 2. Ensure the database is running and accessible.
 
 ### API Endpoints
+Albums
+- **Retrieve all albums**
+  - `GET /albums`
+  - Description: Fetch a list of all albums in the database.
+
+- **Add a new album**
+  - `POST /albums`
+  - Description: Add a new album to the database.
+  - Request Body:
+    ```json
+    {
+      "title": "string",
+      "artist": "string",
+      "genre": "string",
+      "releaseYear": "number"
+    }
+    ```
+
+- **Update an album by ID**
+  - `PUT /albums/{id}`
+  - Description: Update an existing album's details using its ID.
+  - Request Body:
+    ```json
+    {
+      "title": "string",
+      "artist": "string",
+      "genre": "string",
+      "releaseYear": "number"
+    }
+    ```
+
+- **Delete an album by ID**
+  - `DELETE /albums/{id}`
+  - Description: Remove an album from the database by its ID.
+ 
+ ### Artists Endpoints
+
+- **Retrieve all artists**
+  - `GET /artists`
+  - Description: Fetch a list of all artists in the database.
+
+- **Add a new artist**
+  - `POST /artists`
+  - Description: Add a new artist to the database.
+  - Request Body:
+    ```json
+    {
+      "name": "string",
+      "genre": "string",
+      "debutYear": "number"
+    }
+    ```
+
+- **Update an artist by ID**
+  - `PUT /artists/{id}`
+  - Description: Update an existing artist's details using their ID.
+  - Request Body:
+    ```json
+    {
+      "name": "string",
+      "genre": "string",
+      "debutYear": "number"
+    }
+    ```
+
+- **Delete an artist by ID**
+  - `DELETE /artists/{id}`
+  - Description: Remove an artist from the database by their ID.
